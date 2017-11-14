@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'NNCore_Example' do
+  pod 'NNCore', :path => '../'
+
+  target 'NNCore_Tests' do
+    inherit! :search_paths
+
+    pod 'Kiwi'
+  end
+end
