@@ -1,7 +1,9 @@
+platform :ios, '9.0'
 use_frameworks!
+inhibit_all_warnings!
 
 target 'NNCore_Example' do
-  pod 'NNCore', :path => '../'
+  pod 'NNCore', :path => '../', :inhibit_warnings => false
 
   target 'NNCore_Tests' do
     inherit! :search_paths
