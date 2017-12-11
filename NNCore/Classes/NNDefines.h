@@ -46,6 +46,10 @@
     #define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
 #endif
 
+#ifndef VIEW_SAFE_AREA_INSETS
+    #define VIEW_SAFE_AREA_INSETS(view) ({UIEdgeInsets i; if(@available(iOS 11.0, *)) {i = view.safeAreaInsets;} else {i = UIEdgeInsetsZero;} i;})
+#endif
+
 /**
  *  判断设备是否是4s机型
  *
