@@ -32,6 +32,7 @@
 @property (strong, nonatomic, nullable) IBInspectable UIColor  *shadowColor; /**< Shortcut for layer.shadowColor */
 @property (assign, nonatomic) IBInspectable CGSize shadowOffset; /**< Shortcut for layer.shadowOffset */
 @property (assign, nonatomic) IBInspectable CGFloat shadowRadius; /**< Shortcut for layer.shadowRadius */
+@property (assign, nonatomic) IBInspectable CGFloat shadowOpacity; /**< Shortcut for layer.shadowOpacity */
 
 @end
 

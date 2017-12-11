@@ -154,6 +154,14 @@ IB_DESIGNABLE
     }
 }
 
+- (void)setShadowOpacity:(CGFloat)shadowOpacity {
+    self.layer.shadowOpacity = shadowOpacity;
+}
+
+- (CGFloat)shadowOpacity {
+    return self.layer.shadowOpacity;
+}
+
 - (CGFloat)shadowRadius {
     return self.layer.shadowRadius;
 }
