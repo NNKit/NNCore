@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
  The `#` or "0x" sign is not required.
  */
 #ifndef NNColorHex
+
+    #define NNColorRGB(R,G,B) [UIColor colorWithRGB:((R << 16) + (G << 8) + B)]
+    #define NNColorRGBA(R,G,B,A) [UIColor colorWithRGB:((R << 24) + (G << 16) + (B << 8) + A)]
     #define NNColorHex(_hex_) [UIColor colorWithHexString:((__bridge NSString *)CFSTR(#_hex_))]
     #define NNColorString(_hex_) [UIColor colorWithHexString:_hex_]
     #define NNRandomColor [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:1.0]

@@ -20,10 +20,13 @@ describe(@"NNCoreColorExtension", ^{
             UIColor *hexColor2 = [UIColor colorWithHexString:@"#BBCCFF"];
             UIColor *hexColor3 = [UIColor colorWithHexString:@"#BCF"];
             UIColor *hexColor4 = [UIColor colorWithHexString:@"BCF"];
-            
+                        
             [[hexColor2 should] equal:hexColor];
             [[hexColor3 should] equal:hexColor2];
             [[hexColor4 should] equal:hexColor3];
+            
+            [[[hexColor2 hex] should] equal:@"bbccff"];
+            [[[hexColor hex] should] equal:[NNColorRGB(187, 204, 255) hex]];
 
             [[theValue([hexColor rgbValue]) should] equal:theValue([hexColor2 rgbValue])];
             [[theValue([hexColor hex]) should] equal:theValue([hexColor2 hex])];
@@ -31,6 +34,8 @@ describe(@"NNCoreColorExtension", ^{
             
             UIColor *hexAlphaColor = NNColorHex(0xBBCCFFDD);
             [[[hexAlphaColor hex] should] equal:@"bbccff"];
+            
+            [[[UIColor colorWithRGB:12307711] should] equal:hexColor];
         });
         
     });

@@ -13,8 +13,7 @@ static inline NSUInteger hexStrToInt(NSString *str) {
     return result;
 }
 
-static BOOL hexStrToRGBA(NSString *str,
-                         CGFloat *r, CGFloat *g, CGFloat *b, CGFloat *a) {
+static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFloat *a) {
     str = [[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
     if ([str hasPrefix:@"#"]) {
         str = [str substringFromIndex:1];
@@ -56,27 +55,26 @@ static BOOL hexStrToRGBA(NSString *str,
     static NSString *stringFormat = @"%02x%02x%02x";
     NSString *hex = nil;
     if (count == 2) {
-        NSUInteger white = (NSUInteger)(components[0] * 255.0f);
+        NSUInteger white = (NSUInteger)MIN((components[0] * 255.0f), 255);
         hex = [NSString stringWithFormat:stringFormat, white, white, white];
     } else if (count == 4) {
         hex = [NSString stringWithFormat:stringFormat,
-               (NSUInteger)(components[0] * 255.0f),
-               (NSUInteger)(components[1] * 255.0f),
-               (NSUInteger)(components[2] * 255.0f)];
+               (NSUInteger)MIN((components[0] * 255.0f), 255),
+               (NSUInteger)MIN((components[1] * 255.0f), 255),
+               (NSUInteger)MIN((components[2] * 255.0f), 255)];
     }
     
-    if (hex && withAlpha) {
-        hex = [hex stringByAppendingFormat:@"%02lx",
-               (unsigned long)(self.alpha * 255.0 + 0.5)];
-    }
+    
+    CGFloat r,g,b,a;
+    [self getRed:&r green:&g blue:&b alpha:&a];
+    
+    if (hex && withAlpha) { hex = [hex stringByAppendingFormat:@"%02lx", (unsigned long)(self.alpha * 255.0 + 0.5)]; }
     return [hex lowercaseString];
 }
 
 #pragma mark - Getter
 
-- (CGFloat)alpha {
-    return [[NSString stringWithFormat:@"%.2f", CGColorGetAlpha(self.CGColor)] floatValue];
-}
+- (CGFloat)alpha { return [[NSString stringWithFormat:@"%.2f", CGColorGetAlpha(self.CGColor)] floatValue]; }
 
 - (uint32_t)rgbValue {
     CGFloat r = 0, g = 0, b = 0, a = 0;
@@ -97,23 +95,14 @@ static BOOL hexStrToRGBA(NSString *str,
     return (red << 24) + (green << 16) + (blue << 8) + alpha;
 }
 
-- (NSString *)hex {
-    return [self hexStringWithAlpha:NO];
-}
+- (NSString *)hex { return [self hexStringWithAlpha:NO]; }
 
-- (NSString *)hexWithAlpha {
-    return [self hexStringWithAlpha:YES];
-}
+- (NSString *)hexWithAlpha { return [self hexStringWithAlpha:YES]; }
 
 
 #pragma mark - Class Methods
 
-+ (nullable UIColor *)colorWithRGB:(uint32_t)rgbValue {
-    return [UIColor colorWithRed:((rgbValue & 0xFF000000) >> 16) / 255.0f
-                           green:((rgbValue & 0xFF0000) >> 8) / 255.0f
-                            blue:((rgbValue & 0xFF)) / 255.0f
-                           alpha:1.f];
-}
++ (nullable UIColor *)colorWithRGB:(uint32_t)rgbValue { return [self colorWithRGB:rgbValue alpha:1.f]; }
 
 + (nullable UIColor *)colorWithRGBA:(uint32_t)rgbaValue {
     return [UIColor colorWithRed:((rgbaValue & 0xFF000000) >> 24) / 255.0f
@@ -132,9 +121,7 @@ static BOOL hexStrToRGBA(NSString *str,
 + (nullable UIColor *)colorWithHexString:(NSString *)hex {
     
     CGFloat r, g, b, a;
-    if (hexStrToRGBA(hex, &r, &g, &b, &a)) {
-        return [UIColor colorWithRed:r green:g blue:b alpha:a];
-    }
+    if (hexStrToRGBA(hex, &r, &g, &b, &a)) { return [UIColor colorWithRed:r green:g blue:b alpha:a]; }
     return nil;
 }
 
