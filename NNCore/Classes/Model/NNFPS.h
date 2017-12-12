@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+
+/**
+ 提供一个实时监控FPS变化的动态显示控件
+ fpsLabel 会被添加在keyWindow上
+ */
 @interface NNFPS : NSObject
 
 /** 显示fps的lable,可以定制起文字,颜色等 */
@@ -19,13 +24,6 @@
  开启FPS
  */
 - (void)open;
-
-/**
- 开启FPS
-
- @param handler fps变化时,会回调handler
- */
-- (void)openWithHandler:(void(^)(NSInteger fps))handler;
 
 /**
  停止FPS统计

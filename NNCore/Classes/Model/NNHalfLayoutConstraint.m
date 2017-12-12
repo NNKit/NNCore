@@ -9,12 +9,12 @@
 #import "NNHalfLayoutConstraint.h"
 
 @implementation NNHalfLayoutConstraint
-
+@synthesize constant = _constant;
 - (instancetype)init {
     
     if (self = [super init]) {
-        
-        self.halfConstant = 1.0;
+
+        _constant = 1.f / 2.f;
     }
     return self;
 }

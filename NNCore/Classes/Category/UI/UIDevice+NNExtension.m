@@ -420,6 +420,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
 }
 
 - (int64_t)memoryWired {
+    
     mach_port_t host_port = mach_host_self();
     mach_msg_type_number_t host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
     vm_size_t page_size;
@@ -434,6 +435,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
 }
 
 - (int64_t)memoryPurgable {
+    
     mach_port_t host_port = mach_host_self();
     mach_msg_type_number_t host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
     vm_size_t page_size;
@@ -452,6 +454,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
 }
 
 - (float)cpuUsage {
+    
     float cpu = 0;
     NSArray *cpus = [self cpuUsagePerProcessor];
     if (cpus.count == 0) return -1;
@@ -462,6 +465,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
 }
 
 - (NSArray *)cpuUsagePerProcessor {
+    
     processor_info_array_t _cpuInfo, _prevCPUInfo = nil;
     mach_msg_type_number_t _numCPUInfo, _numPrevCPUInfo = 0;
     unsigned _numCPUs;

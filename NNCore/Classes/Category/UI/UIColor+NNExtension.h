@@ -27,11 +27,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIColor (NNExtension)
 
-@property (assign, nonatomic, readonly) CGFloat alpha; /**< 当前颜色的透明度 范围 0~1 */
-@property (assign, nonatomic, readonly) uint32_t rgbValue; /**< 当前颜色的RGB数值 例: 0x66eecc */
-@property (assign, nonatomic, readonly) uint32_t rgbaValue; /**< 当前颜色的RGBA数值 例: 0x66eeccff */
-@property (copy, nonatomic, readonly, nullable)   NSString *hex; /**< 当前颜色的16进制字符串 例: @"0x66EECC" */
-@property (copy, nonatomic, readonly, nullable)   NSString *hexWithAlpha; /**< 当前颜色的16进制字符串 例: @"0x66EECCFF" */
+/** 前颜色的透明度 范围 0~1 */
+@property (assign, nonatomic, readonly) CGFloat alpha;
+/** 当前颜色的RGB数值 例: 0x66eecc */
+@property (assign, nonatomic, readonly) uint32_t rgbValue;
+/** 当前颜色的RGBA数值 例: 0x66eeccff */
+@property (assign, nonatomic, readonly) uint32_t rgbaValue;
+/** 当前颜色的16进制字符串 例: @"0x66EECC" */
+@property (copy, nonatomic, readonly, nullable)   NSString *hex;
+ /** 当前颜色的16进制字符串 例: @"0x66EECCFF" */
+@property (copy, nonatomic, readonly, nullable)   NSString *hexWithAlpha;
 
 
 /**

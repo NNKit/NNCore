@@ -12,6 +12,7 @@
 @implementation NSString (NNExtension)
 
 + (NSString *)stringWithUUID {
+    
     CFUUIDRef uuid = CFUUIDCreate(NULL);
     CFStringRef string = CFUUIDCreateString(NULL, uuid);
     CFRelease(uuid);
@@ -19,6 +20,7 @@
 }
 
 + (NSString *)stringWithUTF32Char:(UTF32Char)char32 {
+    
     char32 = NSSwapHostIntToLittle(char32);
     return [[NSString alloc] initWithBytes:&char32 length:4 encoding:NSUTF32LittleEndianStringEncoding];
 }
@@ -30,6 +32,7 @@
 }
 
 - (void)enumerateUTF32CharInRange:(NSRange)range usingBlock:(void (^)(UTF32Char char32, NSRange range, BOOL *stop))block {
+    
     NSString *str = self;
     if (range.location != 0 || range.length != self.length) {
         str = [self substringWithRange:range];
@@ -53,16 +56,17 @@
 }
 
 - (NSString *)stringByTrim {
-    NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-    return [self stringByTrimmingCharactersInSet:set];
+    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 - (NSString *)stringByAppendingNameScale:(CGFloat)scale {
+    
     if (fabs(scale - 1) <= __FLT_EPSILON__ || self.length == 0 || [self hasSuffix:@"/"]) return self.copy;
     return [self stringByAppendingFormat:@"@%@x", @(scale)];
 }
 
 - (NSString *)stringByAppendingPathScale:(CGFloat)scale {
+    
     if (fabs(scale - 1) <= __FLT_EPSILON__ || self.length == 0 || [self hasSuffix:@"/"]) return self.copy;
     NSString *ext = self.pathExtension;
     NSRange extRange = NSMakeRange(self.length - ext.length, 0);
@@ -72,6 +76,7 @@
 }
 
 - (CGFloat)pathScale {
+    
     if (self.length == 0 || [self hasSuffix:@"/"]) return 1;
     NSString *name = self.stringByDeletingPathExtension;
     __block CGFloat scale = 1;
@@ -82,6 +87,7 @@
 }
 
 - (BOOL)isNotBlank {
+    
     NSCharacterSet *blank = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     for (NSInteger i = 0; i < self.length; ++i) {
         unichar c = [self characterAtIndex:i];
@@ -93,11 +99,13 @@
 }
 
 - (BOOL)containsString:(NSString *)string {
+    
     if (string == nil) return NO;
     return [self rangeOfString:string].location != NSNotFound;
 }
 
 - (BOOL)containsCharacterSet:(NSCharacterSet *)set {
+    
     if (set == nil) return NO;
     return [self rangeOfCharacterFromSet:set].location != NSNotFound;
 }
@@ -119,6 +127,7 @@
 }
 
 + (NSString *)stringNamed:(NSString *)name {
+    
     NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@""];
     NSString *str = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
     if (!str) {
@@ -133,7 +142,6 @@
 @implementation NSString (NNValidateExtension)
 
 - (BOOL)isPhone {
-    
     return [self hasPrefix:@"1"] && self.length == 11;
 }
 
@@ -177,6 +185,7 @@
 }
 
 - (BOOL)matchesRegex:(NSString *)regex options:(NSRegularExpressionOptions)options {
+    
     NSRegularExpression *pattern = [NSRegularExpression regularExpressionWithPattern:regex options:options error:NULL];
     if (!pattern) return NO;
     return ([pattern numberOfMatchesInString:self options:0 range:NSMakeRange(0, self.length)] > 0);
@@ -185,6 +194,7 @@
 - (void)enumerateRegexMatches:(NSString *)regex
                       options:(NSRegularExpressionOptions)options
                    usingBlock:(void (^)(NSString *match, NSRange matchRange, BOOL *stop))block {
+    
     if (regex.length == 0 || !block) return;
     NSRegularExpression *pattern = [NSRegularExpression regularExpressionWithPattern:regex options:options error:nil];
     if (!regex) return;
@@ -196,6 +206,7 @@
 - (NSString *)stringByReplacingRegex:(NSString *)regex
                              options:(NSRegularExpressionOptions)options
                           withString:(NSString *)replacement; {
+    
     NSRegularExpression *pattern = [NSRegularExpression regularExpressionWithPattern:regex options:options error:nil];
     if (!pattern) return self;
     return [pattern stringByReplacingMatchesInString:self options:0 range:NSMakeRange(0, [self length]) withTemplate:replacement];
@@ -281,11 +292,13 @@
 }
 
 + (NSString *)stringWithBase64EncodedString:(NSString *)base64EncodedString {
+    
     NSData *data = [NSData dataWithBase64EncodedString:base64EncodedString];
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)stringByURLEncode {
+    
     if ([self respondsToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
         /**
          AFNetworking/AFURLRequestSerialization.m
@@ -339,6 +352,7 @@
 }
 
 - (NSString *)stringByURLDecode {
+    
     if ([self respondsToSelector:@selector(stringByRemovingPercentEncoding)]) {
         return [self stringByRemovingPercentEncoding];
     } else {
@@ -359,6 +373,7 @@
 }
 
 - (NSString *)stringByEscapingHTML {
+    
     NSUInteger len = self.length;
     if (!len) return self;
     
@@ -393,6 +408,7 @@
 @implementation NSString (NNDrawExtension)
 
 - (CGSize)sizeForFont:(UIFont *)font size:(CGSize)size mode:(NSLineBreakMode)lineBreakMode {
+    
     CGSize result;
     if (!font) font = [UIFont systemFontOfSize:12];
     if ([self respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
@@ -417,11 +433,13 @@
 }
 
 - (CGFloat)widthForFont:(UIFont *)font {
+    
     CGSize size = [self sizeForFont:font size:CGSizeMake(HUGE, HUGE) mode:NSLineBreakByWordWrapping];
     return size.width;
 }
 
 - (CGFloat)heightForFont:(UIFont *)font width:(CGFloat)width {
+    
     CGSize size = [self sizeForFont:font size:CGSizeMake(width, HUGE) mode:NSLineBreakByWordWrapping];
     return size.height;
 }

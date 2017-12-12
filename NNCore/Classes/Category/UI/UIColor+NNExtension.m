@@ -8,12 +8,14 @@
 #import "UIColor+NNExtension.h"
 
 static inline NSUInteger hexStrToInt(NSString *str) {
+    
     uint32_t result = 0;
     sscanf([str UTF8String], "%X", &result);
     return result;
 }
 
 static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFloat *a) {
+    
     str = [[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
     if ([str hasPrefix:@"#"]) {
         str = [str substringFromIndex:1];
@@ -49,6 +51,7 @@ static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFl
 #pragma mark - Private Methods
 
 - (NSString *)hexStringWithAlpha:(BOOL)withAlpha {
+    
     CGColorRef color = self.CGColor;
     size_t count = CGColorGetNumberOfComponents(color);
     const CGFloat *components = CGColorGetComponents(color);
@@ -74,9 +77,12 @@ static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFl
 
 #pragma mark - Getter
 
-- (CGFloat)alpha { return [[NSString stringWithFormat:@"%.2f", CGColorGetAlpha(self.CGColor)] floatValue]; }
+- (CGFloat)alpha {
+    return [[NSString stringWithFormat:@"%.2f", CGColorGetAlpha(self.CGColor)] floatValue];
+}
 
 - (uint32_t)rgbValue {
+    
     CGFloat r = 0, g = 0, b = 0, a = 0;
     [self getRed:&r green:&g blue:&b alpha:&a];
     int8_t red = r * 255;
@@ -86,6 +92,7 @@ static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFl
 }
 
 - (uint32_t)rgbaValue {
+    
     CGFloat r = 0, g = 0, b = 0, a = 0;
     [self getRed:&r green:&g blue:&b alpha:&a];
     int8_t red = r * 255;
@@ -95,16 +102,23 @@ static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFl
     return (red << 24) + (green << 16) + (blue << 8) + alpha;
 }
 
-- (NSString *)hex { return [self hexStringWithAlpha:NO]; }
+- (NSString *)hex {
+    return [self hexStringWithAlpha:NO];
+}
 
-- (NSString *)hexWithAlpha { return [self hexStringWithAlpha:YES]; }
+- (NSString *)hexWithAlpha {
+    return [self hexStringWithAlpha:YES];
+}
 
 
 #pragma mark - Class Methods
 
-+ (nullable UIColor *)colorWithRGB:(uint32_t)rgbValue { return [self colorWithRGB:rgbValue alpha:1.f]; }
++ (nullable UIColor *)colorWithRGB:(uint32_t)rgbValue {
+    return [self colorWithRGB:rgbValue alpha:1.f];
+}
 
 + (nullable UIColor *)colorWithRGBA:(uint32_t)rgbaValue {
+    
     return [UIColor colorWithRed:((rgbaValue & 0xFF000000) >> 24) / 255.0f
                            green:((rgbaValue & 0xFF0000) >> 16) / 255.0f
                             blue:((rgbaValue & 0xFF00) >> 8) / 255.0f
@@ -112,6 +126,7 @@ static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFl
 }
 
 + (nullable UIColor *)colorWithRGB:(uint32_t)rgbValue alpha:(CGFloat)alpha {
+    
     return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16) / 255.0f
                            green:((rgbValue & 0xFF00) >> 8) / 255.0f
                             blue:(rgbValue & 0xFF) / 255.0f

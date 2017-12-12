@@ -8,6 +8,8 @@
 
 #import "NNFPS.h"
 
+#import <NNCore/NNCore.h>
+
 static NNFPS *fps;
 static NSInteger kNNFPSLabelTap = 101;
 
@@ -39,17 +41,16 @@ static NSInteger kNNFPSLabelTap = 101;
     
     if (self = [super init]) {
         
-        
-        self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleDisplayLinkUpdate:)];
-        [self.displayLink setPaused:YES];
-        [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-        
-        self.fpsLabel = [[UILabel alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen] bounds].size.width-50)/2+50, 0, 50, 20)];
-        self.fpsLabel.font=[UIFont boldSystemFontOfSize:12];
-        self.fpsLabel.textColor=[UIColor colorWithRed:0.33 green:0.84 blue:0.43 alpha:1.00];
-        self.fpsLabel.backgroundColor=[UIColor clearColor];
-        self.fpsLabel.textAlignment=NSTextAlignmentRight;
-        self.fpsLabel.tag = kNNFPSLabelTap;
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleDisplayLinkUpdate:)];
+        _displayLink.paused = YES;
+        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+
+        _fpsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - 50.f) / 2 + 50, 0, 50, 20)];
+        _fpsLabel.font=[UIFont boldSystemFontOfSize:12];
+        _fpsLabel.textColor=[UIColor colorWithRed:0.33 green:0.84 blue:0.43 alpha:1.00];
+        _fpsLabel.backgroundColor=[UIColor clearColor];
+        _fpsLabel.textAlignment=NSTextAlignmentRight;
+        _fpsLabel.tag = kNNFPSLabelTap;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleApplicationDidBecomeActive)
@@ -65,14 +66,13 @@ static NSInteger kNNFPSLabelTap = 101;
 
 
 - (void)dealloc {
-    [self.displayLink invalidate];
+    [_displayLink invalidate];
 }
 
 
 #pragma mark - Method
 
 - (void)open {
-    
     [self openWithHandler:nil];
 }
 
@@ -131,12 +131,10 @@ static NSInteger kNNFPSLabelTap = 101;
 }
 
 - (void)handleApplicationDidBecomeActive {
-    
     [self.displayLink setPaused:NO];
 }
 
 - (void)handleApplicationWillResignActive {
-    
     [self.displayLink setPaused:YES];
 }
 

@@ -168,8 +168,8 @@ typedef NS_OPTIONS(NSUInteger, NNetworkTrafficType) {
 NS_ASSUME_NONNULL_END
 
 
-#ifndef kSystemVersion
-    #define kSystemVersion [UIDevice systemVersion]
+#ifndef SYSTEM_VERSION
+    #define SYSTEM_VERSION [UIDevice systemVersion]
 #endif
 
 /// ========================================

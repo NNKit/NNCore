@@ -10,29 +10,44 @@
 
 @interface UIView (NNExtension)
 
-@property (assign, nonatomic) CGFloat left; /**< Shortcut for frame.origin.x */
-@property (assign, nonatomic) CGFloat top; /**< Shortcut for frame.origin.y */
-@property (assign, nonatomic) CGFloat right; /**< Shortcut for frame.origin.x + frame.size.width */
-@property (assign, nonatomic) CGFloat bottom; /**< Shortcut for frame.origin.y + frame.size.height */
-@property (assign, nonatomic) CGFloat width; /**< Shortcut for frame.size.width */
-@property (assign, nonatomic) CGFloat height; /**< Shortcut for frame.size.height */
-@property (assign, nonatomic) CGFloat centerX; /**< Shortcut for center.x */
-@property (assign, nonatomic) CGFloat centerY; /**< Shortcut for center.y */
-@property (assign, nonatomic) CGPoint origin; /**< Shortcut for frame.origin */
-@property (assign, nonatomic) CGSize  size; /**< Shortcut for frame.size */
+/** Shortcut for frame.origin.x */
+@property (assign, nonatomic) CGFloat left;
+/** Shortcut for frame.origin.y */
+@property (assign, nonatomic) CGFloat top;
+/** Shortcut for frame.origin.x + frame.size.width */
+@property (assign, nonatomic) CGFloat right;
+/** Shortcut for frame.origin.y + frame.size.height */
+@property (assign, nonatomic) CGFloat bottom;
+/** Shortcut for frame.size.width */
+@property (assign, nonatomic) CGFloat width;
+/** Shortcut for frame.size.height */
+@property (assign, nonatomic) CGFloat height;
+/** Shortcut for center.x */
+@property (assign, nonatomic) CGFloat centerX;
+/** Shortcut for center.y */
+@property (assign, nonatomic) CGFloat centerY;
+/** Shortcut for frame.origin */
+@property (assign, nonatomic) CGPoint origin;
+/** Shortcut for frame.size */
+@property (assign, nonatomic) CGSize  size;
 
 @end
 
 @interface UIView (NNLayerExtension)
-
-@property (assign, nonatomic) IBInspectable CGFloat borderWidth; /**< Shortcut for layer.borderWidth */
-@property (strong, nonatomic, nullable) IBInspectable UIColor  *borderColor; /**< Shortcut for layer.borderColor */
-@property (assign, nonatomic) IBInspectable CGFloat cornerRadius; /**< Shortcut for layer.cornerRadius */
-
-@property (strong, nonatomic, nullable) IBInspectable UIColor  *shadowColor; /**< Shortcut for layer.shadowColor */
-@property (assign, nonatomic) IBInspectable CGSize shadowOffset; /**< Shortcut for layer.shadowOffset */
-@property (assign, nonatomic) IBInspectable CGFloat shadowRadius; /**< Shortcut for layer.shadowRadius */
-@property (assign, nonatomic) IBInspectable CGFloat shadowOpacity; /**< Shortcut for layer.shadowOpacity */
+/** Shortcut for layer.borderWidth */
+@property (assign, nonatomic) IBInspectable CGFloat borderWidth;
+/** Shortcut for layer.borderColor */
+@property (strong, nonatomic, nullable) IBInspectable UIColor  *borderColor;
+/** Shortcut for layer.cornerRadius */
+@property (assign, nonatomic) IBInspectable CGFloat cornerRadius;
+/** Shortcut for layer.shadowColor */
+@property (strong, nonatomic, nullable) IBInspectable UIColor  *shadowColor;
+/** Shortcut for layer.shadowOffset */
+@property (assign, nonatomic) IBInspectable CGSize shadowOffset;
+/** Shortcut for layer.shadowRadius */
+@property (assign, nonatomic) IBInspectable CGFloat shadowRadius;
+/** Shortcut for layer.shadowOpacity */
+@property (assign, nonatomic) IBInspectable CGFloat shadowOpacity;
 
 @end
 

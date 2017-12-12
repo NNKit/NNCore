@@ -18,7 +18,6 @@
 - (NSArray *)map:(id(^)(id obj, NSInteger index))block {
     
     if (!block) { return [self copy]; }
-    
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:self.count];
     [self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
@@ -30,7 +29,6 @@
 - (NSArray *)filter:(BOOL(^)(id obj))filterBlock {
     
     if (!filterBlock) { return [self copy]; }
-    
     return [self filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         return !filterBlock(evaluatedObject);
     }]];
@@ -39,7 +37,6 @@
 - (id)fetchOneObject:(BOOL(^)(id obj))handler {
 
     if (!handler) { return [self firstObject]; }
-
     __block id ret = nil;
     [self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
@@ -54,7 +51,6 @@
 - (BOOL)any:(BOOL(^)(id obj))block {
     
     if (!block || !self.count) { return NO; }
-    
     __block BOOL ret = NO;
     [self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
@@ -82,7 +78,6 @@
 }
 
 - (BOOL)isEmpty {
-    
     return ![self isKindOfClass:[NSArray class]] || self.count == 0;
 }
 

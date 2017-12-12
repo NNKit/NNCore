@@ -165,6 +165,7 @@ NSString *const kNNShortTimeFormat = @"HH:mm:ss";
 }
 
 - (NSString *)stringWithISOFormat {
+    
     static NSDateFormatter *formatter = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -192,8 +193,7 @@ NSString *const kNNShortTimeFormat = @"HH:mm:ss";
     return [NSDate dateFromString:string format:kNNDefaultDateFormat];
 }
 
-+ (NSDate *)dateFromString:(NSString *)string
-                    format:(NSString *)format {
++ (NSDate *)dateFromString:(NSString *)string format:(NSString *)format {
     return [NSDate dateFromString:string format:format timeZone:nil local:nil];
 }
 
@@ -209,6 +209,7 @@ NSString *const kNNShortTimeFormat = @"HH:mm:ss";
 }
 
 + (NSDate *)dateWithISOFormatString:(NSString *)dateString {
+    
     static NSDateFormatter *formatter = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

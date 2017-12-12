@@ -152,27 +152,22 @@
 @implementation NSMutableDictionary (NNStructExtension)
 
 - (void)setBoolValue:(BOOL)value forKey:(id)key {
-    
     [self setObject:@(value) forKey:key];
 }
 
 - (void)setFloatValue:(CGFloat)value forKey:(id)key {
-    
     [self setObject:@(value) forKey:key];
 }
 
 - (void)setSizeValue:(CGSize)value forKey:(id)key {
-    
     [self setObject:[NSValue valueWithCGSize:value] forKey:key];
 }
 
 - (void)setRectValue:(CGRect)value forKey:(id)key {
-    
     [self setObject:[NSValue valueWithCGRect:value] forKey:key];
 }
 
 - (void)setPointValue:(CGPoint)value forKey:(id)key {
-    
     [self setObject:[NSValue valueWithCGPoint:value] forKey:key];
 }
 
