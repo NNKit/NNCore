@@ -8,12 +8,12 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NNCore'
-  s.version          = '0.0.5'
+  s.version          = '0.0.6'
   s.summary          = 'A short description of NNCore.'
-  s.homepage         = 'https://github.com/NNKit/NNCore.git'
+  s.homepage         = 'https://github.com/NNKit/NNCore'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'XMFraker' => '3057600441@qq.com' }
-  s.source           = { :git => 'https://github.com/ws00801526/NNCore.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/NNKit/NNCore.git', :tag => s.version.to_s }
   s.ios.deployment_target = '8.0'
   s.default_subspecs = 'Core'
 
