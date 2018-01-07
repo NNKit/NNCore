@@ -63,7 +63,7 @@
 
 #if __has_include(<NNCore/NNNav.h>)
     #import <NNCore/NNNav.h>
-#else
+#elif __has_include("NNNav.h")
     #import "NNNav.h"
 #endif
 

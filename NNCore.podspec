@@ -29,6 +29,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Nav' do |ss|
+      ss.dependency 'NNCore/Core'
       ss.source_files = 'NNNav/Classes/**/*'
       ss.public_header_files = 'NNNav/Classes/**/*.h'
   end
