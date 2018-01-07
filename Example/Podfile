@@ -4,7 +4,8 @@ inhibit_all_warnings!
 
 target 'NNCore_Example' do
   pod 'NNCore', :path => '../', :inhibit_warnings => false
-
+  pod 'NNCore/Nav', :path => '../', :inhibit_warnings => false
+  pod 'BeeHive', :git => 'https://github.com/alibaba/BeeHive.git', :branch => 'master'
   target 'NNCore_Tests' do
     inherit! :search_paths
 

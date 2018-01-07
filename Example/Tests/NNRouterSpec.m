@@ -1,5 +1,5 @@
 //
-//  NNRouterSpecSpec.m
+//  NNRouterSpec.m
 //  NNCore
 //
 //  Created by XMFraker on 2017/11/10.
@@ -9,7 +9,7 @@
 #import <Kiwi/Kiwi.h>
 #import <NNCore/NNCore.h>
 
-SPEC_BEGIN(NNRouterSpecSpec)
+SPEC_BEGIN(NNRouterSpec)
 
 describe(@"NNRouterSpec", ^{
     context(@"test Router Generate", ^{
