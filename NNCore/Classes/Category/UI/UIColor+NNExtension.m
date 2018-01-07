@@ -34,14 +34,18 @@ static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFl
         *r = hexStrToInt([str substringWithRange:NSMakeRange(0, 1)]) / 255.0f * 17.f;
         *g = hexStrToInt([str substringWithRange:NSMakeRange(1, 1)]) / 255.0f * 17.f;
         *b = hexStrToInt([str substringWithRange:NSMakeRange(2, 1)]) / 255.0f * 17.f;
-        if (length == 4)  *a = hexStrToInt([str substringWithRange:NSMakeRange(3, 1)]) / 255.0f * 17.f;
-        else *a = 1;
+        if (length == 4)
+            *a = hexStrToInt([str substringWithRange:NSMakeRange(3, 1)]) / 255.0f * 17.f;
+        else
+            *a = 1;
     } else {
         *r = hexStrToInt([str substringWithRange:NSMakeRange(0, 2)]) / 255.0f;
         *g = hexStrToInt([str substringWithRange:NSMakeRange(2, 2)]) / 255.0f;
         *b = hexStrToInt([str substringWithRange:NSMakeRange(4, 2)]) / 255.0f;
-        if (length == 8) *a = hexStrToInt([str substringWithRange:NSMakeRange(6, 2)]) / 255.0f;
-        else *a = 1;
+        if (length == 8)
+            *a = hexStrToInt([str substringWithRange:NSMakeRange(6, 2)]) / 255.0f;
+        else
+            *a = 1;
     }
     return YES;
 }
@@ -71,7 +75,9 @@ static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFl
     CGFloat r,g,b,a;
     [self getRed:&r green:&g blue:&b alpha:&a];
     
-    if (hex && withAlpha) { hex = [hex stringByAppendingFormat:@"%02lx", (unsigned long)(self.alpha * 255.0 + 0.5)]; }
+    if (hex && withAlpha) {
+        hex = [hex stringByAppendingFormat:@"%02lx", (unsigned long)(self.alpha * 255.0 + 0.5)];
+    }
     return [hex lowercaseString];
 }
 
@@ -136,7 +142,9 @@ static BOOL hexStrToRGBA(NSString *str, CGFloat *r, CGFloat *g, CGFloat *b, CGFl
 + (nullable UIColor *)colorWithHexString:(NSString *)hex {
     
     CGFloat r, g, b, a;
-    if (hexStrToRGBA(hex, &r, &g, &b, &a)) { return [UIColor colorWithRed:r green:g blue:b alpha:a]; }
+    if (hexStrToRGBA(hex, &r, &g, &b, &a)) {
+        return [UIColor colorWithRed:r green:g blue:b alpha:a];
+    }
     return nil;
 }
 

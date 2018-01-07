@@ -1,22 +1,22 @@
-//
-//  WMRouter.m
+//  NNRouter.m
 //  Pods
 //
-//  Created by XMFraker on 2017/5/15.
-//  Copyright © 2017年 WelfareMall. All rights reserved.
-//
+//  Created by  XMFraker on 2017/12/13
+//  Copyright © XMFraker All rights reserved. (https://github.com/ws00801526)
+//  @class      NNSwizzle
+//  @version    <#class version#>
+//  @abstract   <#class description#>
 
 #import "NNRouter.h"
 #import <objc/runtime.h>
 
-static NSString *const  WM_ROUTER_WILDCARD_CHARACTER = @"~";
-static NSString *const  specialCharacters = @"/?&.";
+static NSString *const  kNNRouterWildcardCharacter = @"~";
+static NSString *const  kNNRouterSpecialCharacters = @"/?&.";
+static NSString *const  kNNRouterHandlerKey = @"com.XMFraker.NNCore.kNNRouterHandlerKey";
 
-static NSString *const WMRouterHandlerBlockKey = @"com.XMFraker.NNCore.WMRouterHandlerBlockKey";
-
-NSString *const NNRouterParameterURL = @"com.XMFraker.NNCore.WMRouterParameterURL";
-NSString *const NNRouterParameterCompletionHandler = @"com.XMFraker.NNCore.WMRouterParameterCompletionHandler";
-NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParameterUserInfo";
+NSString *const NNRouterParameterURL = @"com.XMFraker.NNCore.NNRouterParameterURL";
+NSString *const NNRouterParameterCompletionHandler = @"com.XMFraker.NNCore.NNRouterParameterCompletionHandler";
+NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.NNRouterParameterUserInfo";
 
 @interface NNRouter ()
 
@@ -94,7 +94,7 @@ NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParame
         }];
         
         for (NSString* key in subRoutesKeys) {
-            if ([key isEqualToString:pathComponent] || [key isEqualToString:WM_ROUTER_WILDCARD_CHARACTER]) {
+            if ([key isEqualToString:pathComponent] || [key isEqualToString:kNNRouterWildcardCharacter]) {
                 found = YES;
                 subRoutes = subRoutes[key];
                 break;
@@ -105,7 +105,7 @@ NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParame
                 NSString *newPathComponent = pathComponent;
                 // 再做一下特殊处理，比如 :id.html -> :id
                 if ([self.class checkIfContainsSpecialCharacter:key]) {
-                    NSCharacterSet *specialCharacterSet = [NSCharacterSet characterSetWithCharactersInString:specialCharacters];
+                    NSCharacterSet *specialCharacterSet = [NSCharacterSet characterSetWithCharactersInString:kNNRouterSpecialCharacters];
                     NSRange range = [key rangeOfCharacterFromSet:specialCharacterSet];
                     if (range.location != NSNotFound) {
                         // 把 pathComponent 后面的部分也去掉
@@ -138,7 +138,7 @@ NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParame
     
     
     if (subRoutes[@"_"]) {
-        parameters[WMRouterHandlerBlockKey] = [subRoutes[@"_"] copy];
+        parameters[kNNRouterHandlerKey] = [subRoutes[@"_"] copy];
     }
     
     return parameters;
@@ -180,7 +180,7 @@ NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParame
         // 如果只有协议，那么放一个占位符
         URL = pathSegments.lastObject;
         if (!URL.length) {
-            [pathComponents addObject:WM_ROUTER_WILDCARD_CHARACTER];
+            [pathComponents addObject:kNNRouterWildcardCharacter];
         }
     }
     
@@ -196,7 +196,7 @@ NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParame
 
 + (BOOL)checkIfContainsSpecialCharacter:(NSString *)checkedString {
     
-    NSCharacterSet *specialCharactersSet = [NSCharacterSet characterSetWithCharactersInString:specialCharacters];
+    NSCharacterSet *specialCharactersSet = [NSCharacterSet characterSetWithCharactersInString:kNNRouterSpecialCharacters];
     return [checkedString rangeOfCharacterFromSet:specialCharactersSet].location != NSNotFound;
 }
 
@@ -244,7 +244,7 @@ NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParame
     }];
     
     if (parameters) {
-        void(^handler)(NSDictionary *ret) = parameters[WMRouterHandlerBlockKey];
+        void(^handler)(NSDictionary *ret) = parameters[kNNRouterHandlerKey];
         if (completionHandler) {
             parameters[NNRouterParameterCompletionHandler] = completionHandler;
         }
@@ -254,7 +254,7 @@ NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParame
             [parameters addEntriesFromDictionary:userInfo];
         }
         if (handler) {
-            [parameters removeObjectForKey:WMRouterHandlerBlockKey];
+            [parameters removeObjectForKey:kNNRouterHandlerKey];
             handler([parameters copy]);
         }
     }
@@ -266,13 +266,13 @@ NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParame
     
     URL = [URL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSMutableDictionary *parameters = [router extractParametersFromURL:URL];
-    id(^handler)(NSDictionary *ret) = parameters[WMRouterHandlerBlockKey];
+    id(^handler)(NSDictionary *ret) = parameters[kNNRouterHandlerKey];
     
     if (handler) {
         if (userInfo) {
             parameters[NNRouterParameterUserInfo] = userInfo;
         }
-        [parameters removeObjectForKey:WMRouterHandlerBlockKey];
+        [parameters removeObjectForKey:kNNRouterHandlerKey];
         return handler([parameters copy]);
     }
     return nil;
@@ -285,7 +285,7 @@ NSString *const NNRouterParameterUserInfo = @"com.XMFraker.NNCore.WMRouterParame
 
 + (BOOL)canOpenURL:(NSString *)URL {
     
-    return [[self sharedInstance] extractParametersFromURL:URL][WMRouterHandlerBlockKey] ? YES : NO;
+    return [[self sharedInstance] extractParametersFromURL:URL][kNNRouterHandlerKey] ? YES : NO;
 }
 
 + (NSString *)generateURLWithPattern:(NSString *)pattern

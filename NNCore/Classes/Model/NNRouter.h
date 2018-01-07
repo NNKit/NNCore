@@ -1,10 +1,11 @@
-//
-//  WMRouter.h
+//  NNRouter.h
 //  Pods
 //
-//  Created by XMFraker on 2017/5/15.
-//  Copyright © 2017年 WelfareMall. All rights reserved.
-//
+//  Created by  XMFraker on 2017/12/13
+//  Copyright © XMFraker All rights reserved. (https://github.com/ws00801526)
+//  @class      NNSwizzle
+//  @version    0.0.1
+//  @abstract   <#class description#>
 
 #import <NNCore/NNDefines.h>
 
@@ -21,8 +22,8 @@ typedef void(^NNRouterCompletionHandler)(id _Nullable result);
  提供swizzing 方法  获取Appdelegate 生命周期
  
  Router 定义规则
- 内部跳转 统一定义为icareinternal://xxx/yyy
- 外部跳转 统一定义为icare://xxxxx(外部ID)/xxx/yyy
+ 内部跳转 统一定义为irouterinternal://xxx/yyy
+ 外部跳转 统一定义为irouter://xxxxx(外部ID)/xxx/yyy
  
  使用外部跳转时, 需要添加对应外部app验证功能
  */
@@ -68,7 +69,8 @@ typedef void(^NNRouterCompletionHandler)(id _Nullable result);
  @param URL                 需要处理的URL
  @param completionHandler   处理完成后的回调handler
  */
-+ (void)openURL:(NSString *)URL completionHandler:(nullable NNRouterCompletionHandler)completionHandler;
++ (void)openURL:(NSString *)URL
+    completionHandler:(nullable NNRouterCompletionHandler)completionHandler;
 
 /**
  处理一个URL
@@ -85,7 +87,9 @@ typedef void(^NNRouterCompletionHandler)(id _Nullable result);
  @param userInfo            处理URL时附带的参数
  @param completionHandler   处理完成后的回调handler
  */
-+ (void)openURL:(NSString *)URL withUserInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable NNRouterCompletionHandler)completionHandler;
++ (void)openURL:(NSString *)URL
+       withUserInfo:(nullable NSDictionary *)userInfo
+  completionHandler:(nullable NNRouterCompletionHandler)completionHandler;
 
 
 /**
@@ -103,7 +107,8 @@ typedef void(^NNRouterCompletionHandler)(id _Nullable result);
  @param userInfo    附带的参数
  @return 获取的对象 or nil
  */
-+ (nullable id)objectForURL:(NSString *)URL withUserInfo:(nullable NSDictionary *)userInfo;
++ (nullable id)objectForURL:(NSString *)URL
+               withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
  判断URL 是否可以被WMRouter 处理
@@ -112,7 +117,6 @@ typedef void(^NNRouterCompletionHandler)(id _Nullable result);
  @return YES or NO
  */
 + (BOOL)canOpenURL:(NSString *)URL;
-
 
 /**
  生成对应的可执行的字符串集合
@@ -126,10 +130,7 @@ typedef void(^NNRouterCompletionHandler)(id _Nullable result);
                           parameters:(nullable NSDictionary<NSString*,NSString*> *)parameters;
 @end
 
-
-@interface NNRouter (WMDeprecated)
-
+@interface NNRouter (NNDeprecated)
 - (instancetype)init __deprecated;
-
 @end
 NS_ASSUME_NONNULL_END

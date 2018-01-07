@@ -12,15 +12,24 @@ Pod::Spec.new do |s|
   s.summary          = 'A short description of NNCore.'
   s.homepage         = 'https://github.com/ws00801526/NNCore'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'ws00801526' => '3057600441@qq.com' }
+  s.author           = { 'XMFraker' => '3057600441@qq.com' }
   s.source           = { :git => 'https://github.com/ws00801526/NNCore.git', :tag => s.version.to_s }
   s.ios.deployment_target = '8.0'
-  s.source_files = 'NNCore/Classes/**/*'
-  s.public_header_files = 'NNCore/Classes/**/*.h'
-  #集成初始化模块
-  s.dependency 'BeeHive'
-  #集成日志输出模块, 统一日志输出
-  s.dependency 'CocoaLumberjack'
-  #默认集成YYModel模块
-  s.dependency 'YYModel'
+  s.default_subspecs = 'Core'
+
+  s.subspec 'Core' do |ss|
+      ss.source_files = 'NNCore/Classes/**/*'
+      ss.public_header_files = 'NNCore/Classes/**/*.h'
+      #集成初始化模块
+      ss.dependency 'BeeHive'
+      #集成日志输出模块, 统一日志输出
+      ss.dependency 'CocoaLumberjack'
+      #默认集成YYModel模块
+      ss.dependency 'YYModel'
+  end
+
+  s.subspec 'Nav' do |ss|
+      ss.source_files = 'NNNav/Classes/**/*'
+      ss.public_header_files = 'NNNav/Classes/**/*.h'
+  end
 end
