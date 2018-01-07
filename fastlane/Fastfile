@@ -1,0 +1,9 @@
+min_fastlane_version("2.70.1")
+
+default_platform(:ios)
+
+import '../../fastlane/Fastfile'
+actions_path '../../fastlane/actions'
+platform :ios do
+
+end
