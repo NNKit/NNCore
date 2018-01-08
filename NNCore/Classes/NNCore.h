@@ -72,6 +72,6 @@
 /// ========================================
 
 #import <YYModel/YYModel.h>
-#import <BeeHive/BeeHive.h>
+#import <NNModule/NNModule.h>
 
 #endif /* NNCore_h */

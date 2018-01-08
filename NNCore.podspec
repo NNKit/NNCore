@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
       ss.source_files = 'NNCore/Classes/**/*'
       ss.public_header_files = 'NNCore/Classes/**/*.h'
       #集成初始化模块
-      ss.dependency 'BeeHive'
+      ss.dependency 'NNModule'
       #集成日志输出模块, 统一日志输出
       ss.dependency 'CocoaLumberjack'
       #默认集成YYModel模块
