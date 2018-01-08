@@ -10,8 +10,8 @@
 
 #if __has_include(<NNCore/NNCore.h>)
     #import <NNCore/NNFPS.h>
-    #import <NNCore/NNRouter.h>
     #import <NNCore/NNLogger.h>
+    #import <NNCore/NNDefines.h>
     #import <NNCore/NNSwizzle.h>
     #import <NNCore/NNWeakProxy.h>
     #import <NNCore/NNMutableArray.h>
@@ -33,8 +33,8 @@
     #import <NNCore/UIApplication+NNController.h>
 #else
     #import "NNFPS.h"
-    #import "NNRouter.h"
     #import "NNLogger.h"
+    #import "NNDefines.h"
     #import "NNSwizzle.h"
     #import "NNWeakProxy.h"
     #import "NNMutableArray"
