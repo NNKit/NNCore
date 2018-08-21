@@ -11,7 +11,9 @@
 
 #import <objc/runtime.h>
 
-#import <NNCore/NNCore.h>
+#import <NNCore/NNSwizzle.h>
+#import <NNCore/UIView+NNExtension.h>
+#import <NNCore/UIColor+NNExtension.h>
 
 @interface UINavigationBar (NNTransitionInternal)
 @property (assign, nonatomic, getter=isUsedForTransition) BOOL usedForTransition;
@@ -150,17 +152,59 @@
 
 @end
 
+static NSCache *kNNColorCache;
+static inline UIImage *UIImageWithColor(UIColor *color) {
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        kNNColorCache = [[NSCache alloc] init];
+        kNNColorCache.countLimit = 100;
+    });
+    
+    NSString *key = [color hexWithAlpha];
+    UIImage *image = [kNNColorCache objectForKey:key];
+    if (!image) {
+        CGRect rect = CGRectMake(0.0f, 0.0f, 1.f, 1.f);
+        UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context, color.CGColor);
+        CGContextFillRect(context, rect);
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        if (image) { [kNNColorCache setObject:image forKey:key]; }
+    }
+    return image;
+}
+
 @implementation UIViewController (NNTransitionInternal)
 
 #pragma mark - Life Cycle
 
 + (void)load {
+    NNSwizzleMethod(self, @selector(viewDidLoad), [self class], @selector(nn_transitionViewDidLoad));
     NNSwizzleMethod(self, @selector(viewWillAppear:), [self class], @selector(nn_transitionViewWillAppear:));
     NNSwizzleMethod(self, @selector(viewDidAppear:), [self class], @selector(nn_transitionViewDidAppear:));
     NNSwizzleMethod(self, @selector(viewWillLayoutSubviews), [self class], @selector(nn_transitionViewWillLayoutSubviews));
 }
 
 #pragma mark - Swizzle
+
+- (void)nn_transitionViewDidLoad {
+    
+    /** set bar background image */
+    if (self.perfersBarBackgroundColor) {
+        UIImage *image = UIImageWithColor(self.perfersBarBackgroundColor);
+        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+    }
+    
+    /** set bar shadow image */
+    if (self.perfersBarShadowHidden) {
+        self.navigationController.navigationBar.shadowImage = [UIImage new];
+    } else {
+        self.navigationController.navigationBar.shadowImage = nil;
+    }
+    [self nn_transitionViewDidLoad];
+}
 
 - (void)nn_transitionViewWillAppear:(BOOL)animated {
     
@@ -177,8 +221,8 @@
         });
     }
 
-    [self.navigationController setNavigationBarHidden:self.nn_perfersNavigationBarHidden animated:animated];
-
+    [self.navigationController setNavigationBarHidden:self.perfersBarHidden animated:animated];
+    
     [self nn_transitionViewWillAppear:animated];
 }
 
@@ -472,15 +516,43 @@
 
 #pragma mark - Setter
 
-- (void)setNn_perfersNavigationBarHidden:(BOOL)hidden {
-    objc_setAssociatedObject(self, @selector(nn_perfersNavigationBarHidden), @(hidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setPerfersBarHidden:(BOOL)hidden {
+    objc_setAssociatedObject(self, @selector(perfersBarHidden), @(hidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)setPerfersBarShadowHidden:(BOOL)hidden {
+    if (self.navigationController.navigationBar) {
+        UIImage *image = hidden ? [UIImage new] : nil;
+        self.navigationController.navigationBar.shadowImage = image;
+    }
+    objc_setAssociatedObject(self, @selector(perfersBarShadowHidden), @(hidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)setPerfersBarBackgroundColor:(UIColor *)color {
+    
+    if (self.navigationController.navigationBar && color) {
+        UIImage *image = UIImageWithColor(color);
+        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+    } else {
+        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    }
+    objc_setAssociatedObject(self, @selector(perfersBarBackgroundColor), color, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - Getter
 
-- (BOOL)nn_perfersNavigationBarHidden {
+- (BOOL)perfersBarHidden {
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
     return number ? number.boolValue : NO;
+}
+
+- (BOOL)perfersBarShadowHidden {
+    NSNumber *number = objc_getAssociatedObject(self, _cmd);
+    return number ? number.boolValue : NO;
+}
+
+- (UIColor *)perfersBarBackgroundColor {
+    return objc_getAssociatedObject(self, _cmd);
 }
 
 @end

@@ -10,6 +10,12 @@
 #import <UIKit/UIKit.h>
 
 @interface UIViewController (NNTransition)
-/** 是否隐藏navigationBar 默认NO */
-@property (assign, nonatomic) IBInspectable BOOL nn_perfersNavigationBarHidden;
+
+/** determind navigationBar.hidden. Default NO */
+@property (assign, nonatomic) IBInspectable BOOL perfersBarHidden;
+/** determind navigationBar.shadowImage hidden. Default NO */
+@property (assign, nonatomic) IBInspectable BOOL perfersBarShadowHidden;
+/** set backgroundColor of navigationBar. Default nil */
+@property (copy, nonatomic) IBInspectable UIColor *perfersBarBackgroundColor;
+
 @end

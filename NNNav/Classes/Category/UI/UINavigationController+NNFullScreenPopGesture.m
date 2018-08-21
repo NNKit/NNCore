@@ -10,7 +10,8 @@
 #import "UINavigationController+NNFullScreenPopGesture.h"
 
 #import <objc/runtime.h>
-#import <NNCore/NNCore.h>
+#import <NNCore/NNSwizzle.h>
+#import <NNCore/NNDefines.h>
 
 @implementation UINavigationController (NNFullScreenPopGesture)
 
@@ -26,17 +27,17 @@
 - (void)nn_fullScreenPopGesture_pushViewController:(__kindof UIViewController *)viewController
                                           animated:(BOOL)animated {
     
-    if (!self.nn_perfersPopGestureDisabled && ![self.interactivePopGestureRecognizer.view.gestureRecognizers containsObject:self.nn_popGestrue]) {
+    if (!self.perfersPopGestureDisabled && ![self.interactivePopGestureRecognizer.view.gestureRecognizers containsObject:self.popGestrue]) {
         
         /** 给系统返回手势触发view上添加自定义返回手势 */
-        [self.interactivePopGestureRecognizer.view addGestureRecognizer:self.nn_popGestrue];
+        [self.interactivePopGestureRecognizer.view addGestureRecognizer:self.popGestrue];
         
         /** 解析系统自带返回手势 target,action, 转发到自定义panGes */
         NSArray *internalTargets = [self.interactivePopGestureRecognizer valueForKey:@"targets"];
         id internalTarget = [internalTargets.firstObject valueForKey:@"target"];
         SEL internalAction = NSSelectorFromString(@"handleNavigationTransition:");
-        self.nn_popGestrue.delegate = (id<UIGestureRecognizerDelegate>)self;
-        [self.nn_popGestrue addTarget:internalTarget action:internalAction];
+        self.popGestrue.delegate = (id<UIGestureRecognizerDelegate>)self;
+        [self.popGestrue addTarget:internalTarget action:internalAction];
         
         /** 禁止系统自带的手势返回 */
         self.interactivePopGestureRecognizer.enabled = NO;
@@ -53,15 +54,15 @@
     if (self.viewControllers.count <= 1) return NO;
    
     // Ignore global navigation disable pop gesture
-    if (self.nn_perfersPopGestureDisabled) return NO;
+    if (self.perfersPopGestureDisabled) return NO;
     
     // Ignore top view controller disable pop gesture
     UIViewController *visibleController = self.viewControllers.lastObject;
-    if (visibleController.nn_interactivePopDisabled) return NO;
+    if (visibleController.interactivePopDisabled) return NO;
     
     // Ignore translation.x > pop gesture offset
     const CGPoint location = [gestureRecognizer locationInView:visibleController.view];
-    const CGFloat offset = visibleController.nn_interactivePopOffset;
+    const CGFloat offset = visibleController.interactivePopOffset;
     const CGFloat availableOffsetX = (SCREEN_WIDTH - offset);
     if (offset > 0 && (location.x > availableOffsetX))
         return NO;
@@ -81,7 +82,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
     shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     
-    if (gestureRecognizer == self.nn_popGestrue) {
+    if (gestureRecognizer == self.popGestrue) {
         if ([otherGestureRecognizer.view isKindOfClass:[UIScrollView class]]) {
             return [(UIScrollView *)otherGestureRecognizer.view contentOffset].x <= 0;
         } else if ([otherGestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
@@ -93,13 +94,13 @@
 
 #pragma mark - Setter
 
-- (void)setNn_perfersPopGestureDisabled:(BOOL)disabled {
-    objc_setAssociatedObject(self, @selector(nn_perfersPopGestureDisabled), @(disabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setPerfersPopGestureDisabled:(BOOL)disabled {
+    objc_setAssociatedObject(self, @selector(perfersPopGestureDisabled), @(disabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - Getter
 
-- (UIPanGestureRecognizer *)nn_popGestrue {
+- (UIPanGestureRecognizer *)popGestrue {
     
     UIPanGestureRecognizer *panGes = objc_getAssociatedObject(self, _cmd);
     if (!panGes) {
@@ -110,8 +111,8 @@
     return panGes;
 }
 
-- (BOOL)nn_perfersPopGestureDisabled {
-    return objc_getAssociatedObject(self, @selector(nn_perfersPopGestureDisabled));
+- (BOOL)perfersPopGestureDisabled {
+    return objc_getAssociatedObject(self, @selector(perfersPopGestureDisabled));
 }
 
 @end
@@ -120,22 +121,22 @@
 
 #pragma mark - Setter
 
-- (void)setNn_interactivePopDisabled:(BOOL)disabled {
-    objc_setAssociatedObject(self, @selector(nn_interactivePopDisabled), @(disabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setInteractivePopDisabled:(BOOL)disabled {
+    objc_setAssociatedObject(self, @selector(interactivePopDisabled), @(disabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setNn_interactivePopOffset:(CGFloat)offset {
-    objc_setAssociatedObject(self, @selector(nn_interactivePopOffset), @(offset), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setInteractivePopOffset:(CGFloat)offset {
+    objc_setAssociatedObject(self, @selector(interactivePopOffset), @(offset), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - Getter
 
-- (BOOL)nn_interactivePopDisabled {
+- (BOOL)interactivePopDisabled {
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
     return number ? [number boolValue] : NO;
 }
 
-- (CGFloat)nn_interactivePopOffset {
+- (CGFloat)interactivePopOffset {
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
     return number ? [number floatValue] : CGFLOAT_MIN;
 }

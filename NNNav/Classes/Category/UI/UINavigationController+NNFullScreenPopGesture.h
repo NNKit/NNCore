@@ -11,18 +11,18 @@
 
 @interface UINavigationController (NNFullScreenPopGesture)
 
-/** 全屏返回手势 */
-@property (assign, nonatomic, readonly) UIPanGestureRecognizer *nn_popGestrue;
-/** 是否禁止全局返回手势 默认为 NO */
-@property (assign, nonatomic) IBInspectable BOOL nn_perfersPopGestureDisabled;
+/** pop gesture */
+@property (assign, nonatomic, readonly) UIPanGestureRecognizer *popGestrue;
+/** determind pop ges is disabled. Default NO */
+@property (assign, nonatomic) IBInspectable BOOL perfersPopGestureDisabled;
 
 @end
 
 @interface UIViewController (NNFullScreenPopGesture)
 
-/** 是否关闭全屏返回手势 默认 NO */
-@property (assign, nonatomic) IBInspectable BOOL nn_interactivePopDisabled;
-/** 全屏手势触发offset 默认 0 */
-@property (assign, nonatomic) IBInspectable CGFloat nn_interactivePopOffset;
+/** determind pop action is disabled. Default NO */
+@property (assign, nonatomic) IBInspectable BOOL interactivePopDisabled;
+/** determind pop ges available offset from left edge. Default 0 full screen */
+@property (assign, nonatomic) IBInspectable CGFloat interactivePopOffset;
 
 @end

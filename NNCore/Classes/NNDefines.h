@@ -99,6 +99,13 @@
 
 
 /// ========================================
+/// @name   NNWeak,NNStrong
+/// ========================================
+
+#define NNWeak(o) autoreleasepool{} __weak typeof(o) o##Weak = o;
+#define NNStrong(o) autoreleasepool{} __strong typeof(o) o = o##Weak;
+
+/// ========================================
 /// @name   NSBundle,UIImage 相关宏
 /// ========================================
 
@@ -119,9 +126,8 @@
     #define NNBunldeImage(name) [UIImage imageNamed:name inBundle:NNLocalBundle compatibleWithTraitCollection:nil]
 #endif
 
-
 #ifndef NNLocalized
-    #define NNLocalized(key,tab) WMLocalizedString(key,@"",tab)
+    #define NNLocalized(key,tab) NNLocalizedString(key,@"",tab)
     #define NNLocalizedString(key,val,tab) NSLocalizedStringWithDefaultValue(key, tab, [NSBundle bundleForClass:[self class]], val, @"")
 #endif
 
