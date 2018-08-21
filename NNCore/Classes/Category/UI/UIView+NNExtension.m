@@ -193,26 +193,18 @@ IB_DESIGNABLE
 
 - (nullable UIImage *)snapshotAfterScreenUpdates:(BOOL)updates {
     
-    if (![self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
-        return self.snapshot;
-    }
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.opaque, 0);
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.opaque, [UIScreen mainScreen].scale);
     [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:updates];
     UIImage *snap = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return snap;
 }
 
-- (UIImage *)snapshot {
-    
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, 0);
-    [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:YES];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
-}
+- (UIImage *)snapshot { return [self snapshotAfterScreenUpdates:YES]; }
 
 - (UIViewController *)viewController {
+    
+    /** 此处不使用 nextResponder 循环做, 因为nextResponser可能存在无法跳出循环问题 */
     
     for (UIView *view = self; view; view = view.superview) {
         UIResponder *nextResponder = [view nextResponder];
