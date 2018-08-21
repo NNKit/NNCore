@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NNCore'
-  s.version          = '0.0.9'
+  s.version          = '0.1.0'
   s.summary          = 'A short description of NNCore.'
   s.homepage         = 'https://github.com/NNKit/NNCore'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
