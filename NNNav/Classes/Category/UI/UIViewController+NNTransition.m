@@ -121,7 +121,7 @@
 
 - (BOOL)isUsedForTransition {
     NSNumber *number = objc_getAssociatedObject(self, @selector(isUsedForTransition));
-    return number ? number.boolValue : NO;
+    return [number respondsToSelector:@selector(boolValue)] ? number.boolValue : NO;
 }
 @end
 
@@ -141,13 +141,13 @@
 - (BOOL)nn_shouldRestoreContentInsetAdjustmentBehavior {
     
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    return number ? number.boolValue : NO;
+    return [number respondsToSelector:@selector(boolValue)] ? number.boolValue : NO;
 }
 
 - (UIScrollViewContentInsetAdjustmentBehavior)nn_originalContentInsetAdjustmentBehavior {
     
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    return number ? number.integerValue : UIScrollViewContentInsetAdjustmentNever;
+    return [number respondsToSelector:@selector(integerValue)] ? number.integerValue : UIScrollViewContentInsetAdjustmentNever;
 }
 
 @end
@@ -192,13 +192,13 @@ static inline UIImage *UIImageWithColor(UIColor *color) {
 - (void)nn_transitionViewDidLoad {
     
     /** set bar background image */
-    if (self.perfersBarBackgroundColor) {
-        UIImage *image = UIImageWithColor(self.perfersBarBackgroundColor);
+    if (self.perferredBarBackgroundColor) {
+        UIImage *image = UIImageWithColor(self.perferredBarBackgroundColor);
         [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
     }
     
     /** set bar shadow image */
-    if (self.perfersBarShadowHidden) {
+    if (self.perferredBarShadowHidden) {
         self.navigationController.navigationBar.shadowImage = [UIImage new];
     } else {
         self.navigationController.navigationBar.shadowImage = nil;
@@ -221,7 +221,7 @@ static inline UIImage *UIImageWithColor(UIColor *color) {
         });
     }
 
-    [self.navigationController setNavigationBarHidden:self.perfersBarHidden animated:animated];
+    [self.navigationController setNavigationBarHidden:self.perferredBarHidden animated:animated];
     
     [self nn_transitionViewWillAppear:animated];
 }
@@ -502,7 +502,7 @@ static inline UIImage *UIImageWithColor(UIColor *color) {
 - (BOOL)nn_backgroundViewHidden {
     
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    return number ? number.boolValue : NO;
+    return [number respondsToSelector:@selector(boolValue)] ? number.boolValue : NO;
 }
 
 - (UIColor *)nn_containerViewBackgroundColor {
@@ -516,19 +516,19 @@ static inline UIImage *UIImageWithColor(UIColor *color) {
 
 #pragma mark - Setter
 
-- (void)setPerfersBarHidden:(BOOL)hidden {
-    objc_setAssociatedObject(self, @selector(perfersBarHidden), @(hidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setPerferredBarHidden:(BOOL)hidden {
+    objc_setAssociatedObject(self, @selector(perferredBarHidden), @(hidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setPerfersBarShadowHidden:(BOOL)hidden {
+- (void)setPerferredBarShadowHidden:(BOOL)hidden {
     if (self.navigationController.navigationBar) {
         UIImage *image = hidden ? [UIImage new] : nil;
         self.navigationController.navigationBar.shadowImage = image;
     }
-    objc_setAssociatedObject(self, @selector(perfersBarShadowHidden), @(hidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(perferredBarShadowHidden), @(hidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setPerfersBarBackgroundColor:(UIColor *)color {
+- (void)setPerferredBarBackgroundColor:(UIColor *)color {
     
     if (self.navigationController.navigationBar && color) {
         UIImage *image = UIImageWithColor(color);
@@ -536,22 +536,22 @@ static inline UIImage *UIImageWithColor(UIColor *color) {
     } else {
         [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     }
-    objc_setAssociatedObject(self, @selector(perfersBarBackgroundColor), color, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(perferredBarBackgroundColor), color, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - Getter
 
-- (BOOL)perfersBarHidden {
+- (BOOL)perferredBarHidden {
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    return number ? number.boolValue : NO;
+    return [number respondsToSelector:@selector(boolValue)] ? number.boolValue : NO;
 }
 
-- (BOOL)perfersBarShadowHidden {
+- (BOOL)perferredBarShadowHidden {
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    return number ? number.boolValue : NO;
+    return [number respondsToSelector:@selector(boolValue)] ? number.boolValue : NO;
 }
 
-- (UIColor *)perfersBarBackgroundColor {
+- (UIColor *)perferredBarBackgroundColor {
     return objc_getAssociatedObject(self, _cmd);
 }
 

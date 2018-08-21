@@ -27,7 +27,7 @@
 - (void)nn_fullScreenPopGesture_pushViewController:(__kindof UIViewController *)viewController
                                           animated:(BOOL)animated {
     
-    if (!self.perfersPopGestureDisabled && ![self.interactivePopGestureRecognizer.view.gestureRecognizers containsObject:self.popGestrue]) {
+    if (!self.perferredPopGestureDisabled && ![self.interactivePopGestureRecognizer.view.gestureRecognizers containsObject:self.popGestrue]) {
         
         /** 给系统返回手势触发view上添加自定义返回手势 */
         [self.interactivePopGestureRecognizer.view addGestureRecognizer:self.popGestrue];
@@ -54,7 +54,7 @@
     if (self.viewControllers.count <= 1) return NO;
    
     // Ignore global navigation disable pop gesture
-    if (self.perfersPopGestureDisabled) return NO;
+    if (self.perferredPopGestureDisabled) return NO;
     
     // Ignore top view controller disable pop gesture
     UIViewController *visibleController = self.viewControllers.lastObject;
@@ -94,8 +94,8 @@
 
 #pragma mark - Setter
 
-- (void)setPerfersPopGestureDisabled:(BOOL)disabled {
-    objc_setAssociatedObject(self, @selector(perfersPopGestureDisabled), @(disabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setPerferredPopGestureDisabled:(BOOL)disabled {
+    objc_setAssociatedObject(self, @selector(perferredPopGestureDisabled), @(disabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - Getter
@@ -111,8 +111,9 @@
     return panGes;
 }
 
-- (BOOL)perfersPopGestureDisabled {
-    return objc_getAssociatedObject(self, @selector(perfersPopGestureDisabled));
+- (BOOL)perferredPopGestureDisabled {
+    NSNumber *number = objc_getAssociatedObject(self, _cmd);
+    return [number respondsToSelector:@selector(boolValue)] ? [number boolValue] : NO;
 }
 
 @end
@@ -133,12 +134,12 @@
 
 - (BOOL)interactivePopDisabled {
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    return number ? [number boolValue] : NO;
+    return [number respondsToSelector:@selector(boolValue)] ? [number boolValue] : NO;
 }
 
 - (CGFloat)interactivePopOffset {
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    return number ? [number floatValue] : CGFLOAT_MIN;
+    return [number respondsToSelector:@selector(floatValue)] ? [number floatValue] : CGFLOAT_MIN;
 }
 
 @end

@@ -12,10 +12,10 @@
 @interface UIViewController (NNTransition)
 
 /** determind navigationBar.hidden. Default NO */
-@property (assign, nonatomic) IBInspectable BOOL perfersBarHidden;
+@property (assign, nonatomic) IBInspectable BOOL perferredBarHidden;
 /** determind navigationBar.shadowImage hidden. Default NO */
-@property (assign, nonatomic) IBInspectable BOOL perfersBarShadowHidden;
+@property (assign, nonatomic) IBInspectable BOOL perferredBarShadowHidden;
 /** set backgroundColor of navigationBar. Default nil */
-@property (copy, nonatomic) IBInspectable UIColor *perfersBarBackgroundColor;
+@property (copy, nonatomic) IBInspectable UIColor *perferredBarBackgroundColor;
 
 @end

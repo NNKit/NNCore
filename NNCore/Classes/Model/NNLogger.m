@@ -67,7 +67,7 @@
     }
     
     NSString *dateAndTime = [self stringFromDate:(logMessage.timestamp)];
-    NSString *fileMsg = [NSString stringWithFormat:@"%@[%ld]", logMessage->_fileName, logMessage->_line];
+    NSString *fileMsg = [NSString stringWithFormat:@"%@[%lu]", logMessage->_fileName, (unsigned long)logMessage->_line];
     NSString *logMsg = logMessage->_message;
     
     return [NSString stringWithFormat:@"%@ %@ %@: %@",dateAndTime, logLevel, fileMsg, logMsg];

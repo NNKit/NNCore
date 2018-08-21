@@ -14,7 +14,7 @@
 /** pop gesture */
 @property (assign, nonatomic, readonly) UIPanGestureRecognizer *popGestrue;
 /** determind pop ges is disabled. Default NO */
-@property (assign, nonatomic) IBInspectable BOOL perfersPopGestureDisabled;
+@property (assign, nonatomic) IBInspectable BOOL perferredPopGestureDisabled;
 
 @end
 

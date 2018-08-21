@@ -86,9 +86,7 @@
     
     if (![self anyKeyExists:key]) { return nil; }
     NSNumber *number = [self safeObjectForKey:key];
-    if (!number || ![number isKindOfClass:[NSNumber class]]) {
-        return nil;
-    }
+    if (![number isKindOfClass:[NSNumber class]]) { return nil; }
     return number;
 }
 
@@ -96,9 +94,7 @@
     
     if (![self anyKeyExists:key]) { return nil; }
     NSValue *value = [self safeObjectForKey:key];
-    if (!value || ![value isKindOfClass:[NSValue class]]) {
-        return nil;
-    }
+    if (![value isKindOfClass:[NSValue class]]) { return nil; }
     return value;
 }
 
