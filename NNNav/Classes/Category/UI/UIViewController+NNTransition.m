@@ -544,7 +544,7 @@ static inline UIImage *UIImageWithColor(UIColor *color) {
 }
 
 - (void)setPerferredTitleAttributes:(NSDictionary *)attributes {
-    self.navigationController.navigationBar.titleTextAttributes = attributes
+    self.navigationController.navigationBar.titleTextAttributes = attributes;
     objc_setAssociatedObject(self, @selector(perferredTitleAttributes), attributes, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
