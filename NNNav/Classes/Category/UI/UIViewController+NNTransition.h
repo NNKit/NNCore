@@ -17,5 +17,7 @@
 @property (assign, nonatomic) IBInspectable BOOL perferredBarShadowHidden;
 /** set backgroundColor of navigationBar. Default nil */
 @property (copy, nonatomic) IBInspectable UIColor *perferredBarBackgroundColor;
+/** set backgroundColor of navigationBar. Default nil */
+@property (copy, nonatomic) NSDictionary *perferredTitleAttributes;
 
 @end

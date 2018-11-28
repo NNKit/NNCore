@@ -197,6 +197,10 @@ static inline UIImage *UIImageWithColor(UIColor *color) {
         [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
     }
     
+    if (self.perferredTitleAttributes) {
+        self.navigationController.navigationBar.titleTextAttributes = self.perferredTitleAttributes;
+    }
+    
     /** set bar shadow image */
     if (self.perferredBarShadowHidden) {
         self.navigationController.navigationBar.shadowImage = [UIImage new];
@@ -539,6 +543,11 @@ static inline UIImage *UIImageWithColor(UIColor *color) {
     objc_setAssociatedObject(self, @selector(perferredBarBackgroundColor), color, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (void)setPerferredTitleAttributes:(NSDictionary *)attributes {
+    self.navigationController.navigationBar.titleTextAttributes = attributes
+    objc_setAssociatedObject(self, @selector(perferredTitleAttributes), attributes, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
 #pragma mark - Getter
 
 - (BOOL)perferredBarHidden {
@@ -552,6 +561,10 @@ static inline UIImage *UIImageWithColor(UIColor *color) {
 }
 
 - (UIColor *)perferredBarBackgroundColor {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (NSDictionary *)perferredTitleAttributes {
     return objc_getAssociatedObject(self, _cmd);
 }
 
